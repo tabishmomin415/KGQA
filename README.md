@@ -9,7 +9,7 @@ A Knowledge Graph Question Answering (KGQA) system that takes natural language q
 
 ## System Architecture
 
-```
+```mermaid
 graph TD
     %% Styling
     classDef engine fill:#f9f9f9,stroke:#333,stroke-width:2px;
