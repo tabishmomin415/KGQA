@@ -10,25 +10,47 @@ A Knowledge Graph Question Answering (KGQA) system that takes natural language q
 ## System Architecture
 
 ```
-Natural Language Question
-        │
-        ▼
-Freebase ID Translation      ← fixes /m/xxx IDs from LC-QuAD datasets
-        │
-        ▼
-Entity Linking               ← DBpedia Spotlight → DBpedia Lookup (fallback)
-        │
-        ▼
-SPARQL Generation            ← GWDG LLM (Llama 3.3 70B)
-        │
-        ▼
-DBpedia SPARQL Endpoint      ← primary KG
-        │ empty?
-        ▼
-Wikidata SPARQL Fallback     ← recent events + Wikidata-only entities
-        │
-        ▼
-Answer Synthesis             ← GWDG LLM produces clean natural language answer
+graph TD
+    %% Styling
+    classDef engine fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef external fill:#e1f5fe,stroke:#01579b,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef database fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+    classDef ui fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+
+    %% Nodes
+    User((fa:fa-user User)) 
+    UI[fa:fa-desktop Streamlit Web App]:::ui
+    
+    subgraph Core_Engine ["Core KGQA Engine (Python)"]
+        direction TB
+        Prep[Freebase ID Translation]:::engine
+        EL[Entity Linking: DBpedia Spotlight]:::engine
+        Gen[SPARQL Generation: Llama 3.3]:::engine
+        Exec{fa:fa-microchip Execute Query}:::engine
+    end
+
+    Spotlight((fa:fa-cloud DBpedia API)):::external
+    GWDG((fa:fa-bolt GWDG AI Service)):::external
+
+    DB[(fa:fa-database DBpedia Endpoint)]:::database
+    WD[(fa:fa-database Wikidata Fallback)]:::database
+    Synth[fa:fa-comment Answer Synthesis]:::ui
+
+    %% Connections
+    User -->|Natural Language Question| UI
+    UI --> Prep
+    Prep --> EL
+    EL <--> Spotlight
+    EL --> Gen
+    Gen <--> GWDG
+    Gen --> Exec
+    
+    Exec -->|Primary| DB
+    Exec -->|Empty Result| WD
+    
+    DB --> Synth
+    WD --> Synth
+    Synth -->|Clean Answer| UI
 ```
 
 ## Project Structure
