@@ -307,6 +307,6 @@ if len(st.session_state.history) > 1:
 st.markdown("""
 <hr style="margin-top:3rem;border:none;border-top:1px solid #e2e8f0"/>
 <p style="text-align:center;color:#94a3b8;font-size:0.8rem;padding-bottom:1rem">
-  KGQA System · DBpedia + Wikidata · Leuphana University · Advanced AI WiSe 2025/26
+  KGQA System · DBpedia + Wikidata · Leuphana University · Advanced Machine Learning WiSe 2025/26
 </p>
 """, unsafe_allow_html=True)
