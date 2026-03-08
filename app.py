@@ -86,7 +86,7 @@ st.markdown("""
   <div>
     <h1>KGQA — Knowledge Graph QA</h1>
     <p>Natural language questions answered from <strong>DBpedia</strong> and <strong>Wikidata</strong></p>
-    <span class="kgqa-badge">Advanced AI · WiSe 2025/26 · Leuphana University</span>
+    <span class="kgqa-badge">Advanced Machine Learning · WiSe 2025/26 · Leuphana University</span>
   </div>
 </div>
 """, unsafe_allow_html=True)
