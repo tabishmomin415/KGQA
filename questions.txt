@@ -30,8 +30,10 @@ What is the capital of the country where the Eiffel Tower is? → Paris
 ───────────────────────────────────────────────────────────────────
 WORKING — AGGREGATION / COUNTING
 ───────────────────────────────────────────────────────────────────
-How many films did Steven Spielberg direct?              → 0
-How many countries are in the European Union?            → 28
+How many films did Steven Spielberg direct?              → 45
+How many countries are in the European Union?            → 27 (system returns 28 — Wikidata still lists UK as historical member; 
+                                                               Brexit 2020 end-date stored as qualifier not direct property, 
+                                                               so FILTER NOT EXISTS on wdt:P582 does not exclude it)
 How many languages does Switzerland have as official?    → 4
 
 ───────────────────────────────────────────────────────────────────

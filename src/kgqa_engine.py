@@ -440,7 +440,7 @@ def _handle_count_directly(question: str) -> str:
     # Who is the current president/prime minister/leader of X?
     m = re.search(r"(?:current|who is the).+?(?:president|prime minister|chancellor|leader|head) of (.+?)[\?]?$", q)
     if m:
-        country_name = m.group(1).strip().title()
+        country_name = re.sub(r'^[Tt]he\s+', '', m.group(1).strip()).title()
         # Map common countries to Wikidata QIDs
         country_map = {
             "France":          ("wd:Q142",  "wdt:P35"),
