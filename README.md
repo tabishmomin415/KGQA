@@ -2,7 +2,7 @@
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://knowledge-graph-question-answering.streamlit.app/)
 
-> **Live Demo:** [knowledge-graph-question-answering.streamlit.app](https:/ knowledge-graph-question-answering.streamlit.app/)
+> **Live Demo:** [knowledge-graph-question-answering.streamlit.app](https://knowledge-graph-question-answering.streamlit.app/)
 
 > **Advanced Machine Learning · WiSe 2025/26 · Leuphana University of Lüneburg**
 > Instructor: Prof. Debayan Banerjee & Kai Moltzen
