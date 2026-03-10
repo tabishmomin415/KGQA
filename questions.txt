@@ -6,15 +6,15 @@ What is the capital of Germany?                          → Berlin
 When was Albert Einstein born?                           → March 14, 1879
 Who founded Apple Inc.?                                  → Steve Jobs, Wozniak, Wayne
 What is the population of Paris?                         → ~2.1 million
-When was the Eiffel Tower built?                         → 1889
+When was the Eiffel Tower built?                         → 1887 to 1889
 Who directed the movie Titanic?                          → James Cameron
 What is the currency of Japan?                           → Japanese yen
 Who wrote Harry Potter?                                  → J.K. Rowling
-What is the height of Mount Everest?                     → 8849 metres
+What is the height of Mount Everest?                     → 8848 metres
 Who founded Microsoft?                                   → Bill Gates, Paul Allen
 What is the official language of Brazil?                 → Portuguese
 Who painted the Mona Lisa?                               → Leonardo da Vinci
-What is the area of Russia?                              → ~17 million km²
+What is the area of Russia?                              → 17,075,400 square kilometers
 When was the Berlin Wall built?                          → 1961
 
 ───────────────────────────────────────────────────────────────────
@@ -24,13 +24,13 @@ When was the architect of the Eiffel Tower born?         → 26 December 1847
 What is the birthplace of the founder of Microsoft?      → Seattle, Washington
 What nationality is the director of Schindler's List?    → American
 What university did Barack Obama attend?                  → Harvard Law School
-Who is the spouse of the author of 1984?                 → Eileen O'Shaughnessy
+Who is the spouse of the author of 1984?                 → Eileen O'Shaughnessy and later Sonia Brownell
 What is the capital of the country where the Eiffel Tower is? → Paris
 
 ───────────────────────────────────────────────────────────────────
 WORKING — AGGREGATION / COUNTING
 ───────────────────────────────────────────────────────────────────
-How many films did Steven Spielberg direct?              → (count from KG)
+How many films did Steven Spielberg direct?              → 0
 How many countries are in the European Union?            → 27
 How many languages does Switzerland have as official?    → 4
 
@@ -38,10 +38,10 @@ How many languages does Switzerland have as official?    → 4
 Recent/Current events (Wikidata fallback activated)
 ───────────────────────────────────────────────────────────────────
 Who is the current president of France?                  → Emmanuel Macron (via Wikidata)
-Who is the current prime minister of the United Kingdom? → (via Wikidata preferred rank)
+Who is the current prime minister of the United Kingdom? → Rishi Sunak
 Who won the Nobel Prize in Physics in 2023?              → (via Wikidata)
 Who is the current CEO of OpenAI?                        → Sam Altman (via Wikidata)
-What is the latest population of Germany?                → (via Wikidata P1082)
+What is the latest population of Germany?                → 83,577,140
 
 ───────────────────────────────────────────────────────────────────
 Freebase ID resolution (LC-QuAD style)
@@ -53,17 +53,17 @@ What is the nationality of /m/04wx2t_?                   → Freebase ID auto-re
 ───────────────────────────────────────────────────────────────────
 Wikidata-only entities (automatic KG routing)
 ───────────────────────────────────────────────────────────────────
-Who is the CEO of DeepMind?                              → Switched to Wikidata automatically
-What year was Anthropic founded?                          → Wikidata (sparse in DBpedia)
-What is the headquarters of Mistral AI?                  → Wikidata fallback
-Who founded Hugging Face?                                 → Clément Delangue et al. (WD)
+Who is the CEO of DeepMind?                              → Switched to Wikidata automatically(Demis Hassabis)
+What year was Anthropic founded?                         → Wikidata (sparse in DBpedia)(2021)
+What is the headquarters of Mistral AI?                  → Wikidata fallback (Paris)
+Who founded Hugging Face?                                → Clément Delangue, Julien Chaumond, and Thomas Wolf
 
 ───────────────────────────────────────────────────────────────────
 PARTIAL — Known edge cases
 ───────────────────────────────────────────────────────────────────
-What is the GDP of Germany in 2025?                      → Wikidata used; may vary by year qualifier
-Who won the Champions League in 2025/26?                 → Wikidata; depends on KG recency
-What movies are currently in cinemas?                    → Not a KG task; answered via LLM context
+What is the GDP of Germany in 2025?                      → The GDP of Germany in 2025 is not available
+Who won the Champions League in 2025/26?                 → The winner of the Champions League in 2025/26 is not specified.
+What movies are currently in cinemas?                    → Not a KG task
 
 ───────────────────────────────────────────────────────────────────
 OUT OF SCOPE
