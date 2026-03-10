@@ -428,6 +428,50 @@ Entity context:
 Answer:"""
     return llm.complete(_SYS_ANSWER, prompt, max_tokens=300)
 
+def _is_count_question(question: str) -> bool:
+    q = question.lower()
+    return q.startswith("how many") or "how many" in q
+
+
+def _handle_count_directly(question: str) -> str:
+    """
+    For COUNT questions, build the SPARQL directly instead of relying on LLM.
+    Returns a SPARQL string or empty string if not handled.
+    """
+    q = question.lower()
+
+    # How many films did X direct?
+    m = re.search(r"how many films did (.+?) direct", q)
+    if m:
+        name = m.group(1).strip().title().replace(" ", "_")
+        return f"""PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+SELECT (COUNT(DISTINCT ?film) AS ?count) WHERE {{
+  dbr:{name} dbo:director ?film .
+  ?film a dbo:Film .
+}}"""
+
+    # How many countries are in the European Union?
+    if "european union" in q and "countr" in q:
+        return """PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT (COUNT(DISTINCT ?country) AS ?count) WHERE {
+  ?country dbo:memberOf dbr:European_Union .
+}"""
+
+    # How many official languages does X have?
+    m = re.search(r"how many (?:official )?languages does (.+?) have", q)
+    if m:
+        name = m.group(1).strip().title().replace(" ", "_")
+        return f"""PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+SELECT (COUNT(DISTINCT ?lang) AS ?count) WHERE {{
+  dbr:{name} dbo:officialLanguage ?lang .
+}}"""
+
+    return ""
+
 # Helpers
 
 def _is_recent(question: str) -> bool:
@@ -505,6 +549,21 @@ class KGQAPipeline:
         sparql         = ""
         sparql_results = []
         kg_used        = ""
+
+        count_sparql = _handle_count_directly(q)
+        if count_sparql:
+            sparql_results = _sparql_dbpedia(count_sparql)
+            if sparql_results:
+                sparql  = count_sparql
+                kg_used = "dbpedia"
+                result["sparql"]         = sparql
+                result["sparql_results"] = sparql_results
+                result["kg_used"]        = kg_used
+                result["entities"]       = entities
+                result["answer"]         = synthesise_answer(
+                    q, entities, sparql, sparql_results, [], kg_used, self.llm)
+                result["duration_s"] = round(time.time() - t0, 2)
+                return result
 
         if use_wikidata_first:
             sparql         = generate_sparql_wikidata(q, entities, self.llm)

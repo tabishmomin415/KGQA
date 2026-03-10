@@ -47,7 +47,7 @@ What is the latest population of Germany?                → 83,577,140
 Freebase ID resolution (LC-QuAD style)
 ───────────────────────────────────────────────────────────────────
 What is the birthplace of /m/0d0vqn?                     → /m/0d0vqn Barack Obama
-Who is the spouse of /m/016t_3?                          → /m/016t_3 via wdt:P646
+Who is the spouse of /m/016t_3?                          → Jorge Arantes, Neil Murray
 What is the nationality of /m/04wx2t_?                   → Freebase ID auto-resolved
 
 ───────────────────────────────────────────────────────────────────
