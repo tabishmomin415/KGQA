@@ -434,10 +434,7 @@ def _is_count_question(question: str) -> bool:
 
 
 def _handle_count_directly(question: str) -> str:
-    """
-    For COUNT questions, build the SPARQL directly instead of relying on LLM.
-    Returns a SPARQL string or empty string if not handled.
-    """
+  
     q = question.lower()
 
     # How many films did X direct?
@@ -452,13 +449,22 @@ SELECT (COUNT(DISTINCT ?film) AS ?count) WHERE {{
 }}"""
 
     # How many countries are in the European Union?
+    # How many countries are in the European Union?
     if "european union" in q and "countr" in q:
-        return """PREFIX dbo: <http://dbpedia.org/ontology/>
-PREFIX dbr: <http://dbpedia.org/resource/>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        # Use Wikidata — wd:Q458 is European Union, P463 = member of
+        rows = _sparql_wikidata("""PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
 SELECT (COUNT(DISTINCT ?country) AS ?count) WHERE {
-  ?country dbo:memberOf dbr:European_Union .
-}"""
+  ?country wdt:P463 wd:Q458 .
+  ?country wdt:P31 wd:Q6256 .
+}""")
+        if rows:
+            count = rows[0].get("count", {}).get("value", "0")
+            # Return a fake SPARQL result directly as answer
+            return f"__DIRECT_ANSWER__:{count} countries are in the European Union."
+        return ""
 
     # How many official languages does X have?
     m = re.search(r"how many (?:official )?languages does (.+?) have", q)
@@ -552,6 +558,11 @@ class KGQAPipeline:
 
         count_sparql = _handle_count_directly(q)
         if count_sparql:
+            if count_sparql.startswith("__DIRECT_ANSWER__:"):
+                result["answer"]     = count_sparql.split(":", 1)[1]
+                result["kg_used"]    = "wikidata"
+                result["duration_s"] = round(time.time() - t0, 2)
+                return result
             sparql_results = _sparql_dbpedia(count_sparql)
             if sparql_results:
                 sparql  = count_sparql
