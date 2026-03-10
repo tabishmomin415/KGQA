@@ -437,18 +437,53 @@ def _handle_count_directly(question: str) -> str:
   
     q = question.lower()
 
+    # Who won the Nobel Prize in [subject] in [year]?
+    m = re.search(r"who won.+?nobel prize.+?(\d{4})", q)
+    if not m:
+        m = re.search(r"nobel prize.+?(\d{4})", q)
+    if m:
+        year = m.group(1)
+        prize_qid = "wd:Q38104"
+        if "chemistry" in q:   prize_qid = "wd:Q44585"
+        if "medicine" in q:    prize_qid = "wd:Q58618"
+        if "literature" in q:  prize_qid = "wd:Q37922"
+        if "peace" in q:       prize_qid = "wd:Q35637"
+        if "economics" in q:   prize_qid = "wd:Q56376"
+        rows = _sparql_wikidata(f"""PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+SELECT DISTINCT ?personLabel WHERE {{
+  ?person p:P166 ?stmt .
+  ?stmt ps:P166 {prize_qid} .
+  ?stmt pq:P585 ?date .
+  FILTER(YEAR(?date) = {year})
+  SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
+}} LIMIT 10""")
+        if rows:
+            names = [r.get("personLabel", {}).get("value", "") for r in rows
+                     if r.get("personLabel", {}).get("value", "")]
+            return f"__DIRECT_ANSWER__:The Nobel Prize in Physics {year} was awarded to: {', '.join(names)}."
+        return ""
+
     # How many films did X direct?
     m = re.search(r"how many films did (.+?) direct", q)
     if m:
         name = m.group(1).strip().title().replace(" ", "_")
-        return f"""PREFIX dbo: <http://dbpedia.org/ontology/>
+        # DBpedia stores director on the film: ?film dbo:director dbr:Person
+        rows = _sparql_dbpedia(f"""PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbr: <http://dbpedia.org/resource/>
 SELECT (COUNT(DISTINCT ?film) AS ?count) WHERE {{
-  dbr:{name} dbo:director ?film .
-  ?film a dbo:Film .
-}}"""
+  ?film dbo:director dbr:{name} .
+}}""")
+        if rows:
+            count = rows[0].get("count", {}).get("value", "0")
+            return f"__DIRECT_ANSWER__:{name.replace('_',' ')} directed {count} films according to DBpedia."
+        return ""
 
-    # How many countries are in the European Union?
     # How many countries are in the European Union?
     if "european union" in q and "countr" in q:
         # Use Wikidata — wd:Q458 is European Union, P463 = member of
@@ -459,6 +494,7 @@ PREFIX bd: <http://www.bigdata.com/rdf#>
 SELECT (COUNT(DISTINCT ?country) AS ?count) WHERE {
   ?country wdt:P463 wd:Q458 .
   ?country wdt:P31 wd:Q6256 .
+  FILTER NOT EXISTS { ?country wdt:P582 ?endDate }
 }""")
         if rows:
             count = rows[0].get("count", {}).get("value", "0")

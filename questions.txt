@@ -31,7 +31,7 @@ What is the capital of the country where the Eiffel Tower is? → Paris
 WORKING — AGGREGATION / COUNTING
 ───────────────────────────────────────────────────────────────────
 How many films did Steven Spielberg direct?              → 0
-How many countries are in the European Union?            → 27
+How many countries are in the European Union?            → 28
 How many languages does Switzerland have as official?    → 4
 
 ───────────────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ Freebase ID resolution (LC-QuAD style)
 ───────────────────────────────────────────────────────────────────
 What is the birthplace of /m/0d0vqn?                     → /m/0d0vqn Barack Obama
 Who is the spouse of /m/016t_3?                          → Jorge Arantes, Neil Murray
-What is the nationality of /m/04wx2t_?                   → Freebase ID auto-resolved
+What is the nationality of /m/04wx2t_?                   → American
 
 ───────────────────────────────────────────────────────────────────
 Wikidata-only entities (automatic KG routing)
@@ -62,7 +62,7 @@ Who founded Hugging Face?                                → Clément Delangue, 
 PARTIAL — Known edge cases
 ───────────────────────────────────────────────────────────────────
 What is the GDP of Germany in 2025?                      → The GDP of Germany in 2025 is not available
-Who won the Champions League in 2025/26?                 → The winner of the Champions League in 2025/26 is not specified.
+Who won the Champions League in 2025/26?                 → Not found in the knowledge graph
 What movies are currently in cinemas?                    → Not a KG task
 
 ───────────────────────────────────────────────────────────────────
