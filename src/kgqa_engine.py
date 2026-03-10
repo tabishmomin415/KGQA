@@ -437,6 +437,46 @@ def _handle_count_directly(question: str) -> str:
   
     q = question.lower()
 
+    # Who is the current president/prime minister/leader of X?
+    m = re.search(r"(?:current|who is the).+?(?:president|prime minister|chancellor|leader|head) of (.+?)[\?]?$", q)
+    if m:
+        country_name = m.group(1).strip().title()
+        # Map common countries to Wikidata QIDs
+        country_map = {
+            "France":          ("wd:Q142",  "wdt:P35"),
+            "United Kingdom":  ("wd:Q145",  "wdt:P6"),   
+            "Uk":              ("wd:Q145",  "wdt:P6"),
+            "Britain":         ("wd:Q145",  "wdt:P6"),
+            "Germany":         ("wd:Q183",  "wdt:P6"),
+            "United States":   ("wd:Q30",   "wdt:P35"),
+            "Usa":             ("wd:Q30",   "wdt:P35"),
+            "Italy":           ("wd:Q38",   "wdt:P6"),
+            "Canada":          ("wd:Q16",   "wdt:P6"),
+            "India":           ("wd:Q668",  "wdt:P6"),
+            "China":           ("wd:Q148",  "wdt:P6"),
+            "Russia":          ("wd:Q159",  "wdt:P35"),
+            "Japan":           ("wd:Q17",   "wdt:P6"),
+        }
+        country_qid, prop = country_map.get(country_name, (None, None))
+        if country_qid:
+            rows = _sparql_wikidata(f"""PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+SELECT ?leaderLabel WHERE {{
+  {country_qid} p:{prop.split(':')[1]} ?stmt .
+  ?stmt ps:{prop.split(':')[1]} ?leader .
+  FILTER NOT EXISTS {{ ?stmt pq:P582 ?end }}
+  SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
+}} LIMIT 1""")
+            if rows:
+                name = rows[0].get("leaderLabel", {}).get("value", "")
+                if name:
+                    return f"__DIRECT_ANSWER__:{name} is the current leader of {country_name}."
+        return ""
+
     # Who won the Nobel Prize in [subject] in [year]?
     m = re.search(r"who won.+?nobel prize.+?(\d{4})", q)
     if not m:

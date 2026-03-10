@@ -39,7 +39,7 @@ Recent/Current events (Wikidata fallback activated)
 ───────────────────────────────────────────────────────────────────
 Who is the current president of France?                  → Emmanuel Macron (via Wikidata)
 Who is the current prime minister of the United Kingdom? → Rishi Sunak
-Who won the Nobel Prize in Physics in 2023?              → (via Wikidata)
+Who won the Nobel Prize in Physics in 2023?              → Ferenc Krausz, Pierre Agostini, Anne L'Huillier
 Who is the current CEO of OpenAI?                        → Sam Altman (via Wikidata)
 What is the latest population of Germany?                → 83,577,140
 
@@ -53,9 +53,9 @@ What is the nationality of /m/04wx2t_?                   → American
 ───────────────────────────────────────────────────────────────────
 Wikidata-only entities (automatic KG routing)
 ───────────────────────────────────────────────────────────────────
-Who is the CEO of DeepMind?                              → Switched to Wikidata automatically(Demis Hassabis)
+Who is the CEO of DeepMind?                              → Wikidata (Demis Hassabis)
 What year was Anthropic founded?                         → Wikidata (sparse in DBpedia)(2021)
-What is the headquarters of Mistral AI?                  → Wikidata fallback (Paris)
+What is the headquarters of Mistral AI?                  → Wikidata (Paris)
 Who founded Hugging Face?                                → Clément Delangue, Julien Chaumond, and Thomas Wolf
 
 ───────────────────────────────────────────────────────────────────
