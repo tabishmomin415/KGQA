@@ -40,7 +40,7 @@ How many languages does Switzerland have as official?    → 4
 Recent/Current events (Wikidata fallback activated)
 ───────────────────────────────────────────────────────────────────
 Who is the current president of France?                  → Emmanuel Macron (via Wikidata)
-Who is the current prime minister of the United Kingdom? → Rishi Sunak
+Who is the current prime minister of the United Kingdom? → Keir Starmer
 Who won the Nobel Prize in Physics in 2023?              → Ferenc Krausz, Pierre Agostini, Anne L'Huillier
 Who is the current CEO of OpenAI?                        → Sam Altman (via Wikidata)
 What is the latest population of Germany?                → 83,577,140
